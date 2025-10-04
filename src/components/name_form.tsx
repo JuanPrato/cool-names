@@ -65,7 +65,7 @@ export function NameForm() {
       </div>
       <button className="cursor-pointer flex items-center justify-center w-full p-4 bg-gradient rounded-2xl text-white gap-2 mt-4 font-bold transition-colors hover:from-primary-accent hover:to-primary shadow-glow disabled:opacity-50 disabled:cursor-not-allowed" type="button" onClick={onSubmit} disabled={loading}><RefreshCcw className={`size-5 ${loading ? "animate-spin" : ""}`} /> Generar nombres</button>
       {
-        names.length === 0 && !loading && (
+        names.length !== 0 && !loading && (
           <div>
             <h4 className="font-semibold text-black/70 mt-6 text-sm">Nombres generados:</h4>
             <ul className="list-none gap-2 flex flex-col">
