@@ -4,7 +4,6 @@ import { NAME_CATEGORIES } from "@/utils/consts";
 import { CategoryButton } from "./button";
 import { Lock, RefreshCcw } from "lucide-react";
 import { useState } from "react";
-import { toggleValue } from "@/utils/utils";
 import { runFlow } from "@genkit-ai/next/client";
 import type { GenerateNamesFlow } from "@/utils/ai";
 import { NameItemsList } from "./name_items_list";
@@ -15,7 +14,7 @@ export function NameForm() {
   const { user } = useAuth();
 
   const [form, setForm] = useState({
-    categories: [] as string[],
+    category: NAME_CATEGORIES.filter((c) => c.default)[0] as typeof NAME_CATEGORIES[number],
     description: "",
   });
 
@@ -25,9 +24,16 @@ export function NameForm() {
 
   async function onSubmit() {
     setLoading(true);
+    console.log("User on submit:", await user?.getIdToken());
     const { names: generatedNames } = await runFlow<GenerateNamesFlow>({
       url: "/api/flow/names",
-      input: form,
+      headers: {
+        "Authorization": user ? `Bearer ${await user.getIdToken()}` : "",
+      },
+      input: {
+        categories: [form.category.value],
+        description: form.description,
+      },
     });
 
     setNames(generatedNames);
@@ -44,8 +50,14 @@ export function NameForm() {
               <CategoryButton
                 key={category.value}
                 category={category}
+                on={form.category.value === category.value}
                 onClick={() => setForm((prev) => {
-                  return { ...prev, categories: toggleValue(prev.categories, category.value) };
+
+                  if (prev.category.value === category.value) {
+                    return { ...prev, category: NAME_CATEGORIES.filter((c) => c.default)[0] };
+                  }
+
+                  return { ...prev, category };
                 })}>
               </CategoryButton>
             ))

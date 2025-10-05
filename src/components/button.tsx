@@ -2,11 +2,15 @@
 
 import { NAME_CATEGORIES } from "@/utils/consts";
 import { Check, CopyIcon } from "lucide-react";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 export function ToggleButton(props: PropsWithChildren<{ defaultOn?: boolean, className?: string, activeClassName?: string, inactiveClassName?: string, onClick?: () => void }>) {
 
   const [isOn, setIsOn] = useState(props.defaultOn || false);
+
+  useEffect(() => {
+    setIsOn(props.defaultOn || false);
+  }, [props.defaultOn]);
 
   const handleClick = () => {
     setIsOn(!isOn);
@@ -24,14 +28,15 @@ export function ToggleButton(props: PropsWithChildren<{ defaultOn?: boolean, cla
   );
 }
 
-export function CategoryButton({ category, onClick }: { category: typeof NAME_CATEGORIES[number], onClick: () => void }) {
+export function CategoryButton({ category, onClick, on }: { category: typeof NAME_CATEGORIES[number], onClick: () => void, on?: boolean }) {
   return (
     <ToggleButton
       key={category.value}
       className="p-4 border-2 rounded-2xl w-full"
       activeClassName="border-primary bg-primary/10 hover:bg-primary/20"
       inactiveClassName="border-black/20 bg-white hover:bg-black/5"
-      onClick={onClick}>
+      onClick={onClick}
+      defaultOn={on}>
       <div className="text-2xl">{category.icon}</div>
       <div className="font-medium text-black/70">{category.label}</div>
     </ToggleButton>

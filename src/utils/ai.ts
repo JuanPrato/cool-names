@@ -1,5 +1,5 @@
 import { googleAI } from "@genkit-ai/google-genai";
-import { genkit, z } from "genkit";
+import { genkit, UserFacingError, z } from "genkit";
 
 const ai = genkit({
   plugins: [googleAI()],
@@ -17,7 +17,14 @@ export const generateNamesFlow = ai.defineFlow(
       names: z.array(z.string()),
     }),
   },
-  async (input) => {
+  async (input, { context }) => {
+    if (!context?.user) {
+      throw new UserFacingError(
+        "UNAUTHENTICATED",
+        "You have to log in to use ai features."
+      );
+    }
+
     const { categories, description } = input;
     let prompt = `
 Actuá como un generador de nombres de usuario creativo para una página web llamada “dameunnombrecool.com”.
