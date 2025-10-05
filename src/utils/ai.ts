@@ -31,6 +31,7 @@ Reglas generales:
 - Los nombres deben sonar naturales y atractivos.
 - Entregá exactamente 10 nombres distintos, sin explicaciones ni texto adicional.
 - Si llega más de una categoría, combiná estilos de esas categorías para crear nombres únicos.
+- Los nombres deben ser en español o inglés, según lo que suene mejor.
 
 Instrucciones por categoría:
 - RANDOM: mezcla estilos, crea nombres que suenen naturales, modernos o originales sin seguir una regla específica.
