@@ -2,9 +2,9 @@ import { auth } from "firebase-admin";
 import { app } from "./init.server";
 import { RequestData } from "genkit/context";
 
-export async function getCurrentUser(req: RequestData) {
-  const a = auth(app);
+const a = auth(app);
 
+export async function getCurrentUser(req: RequestData) {
   const authHeader = req.headers["authorization"];
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.split(" ")[1];

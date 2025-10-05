@@ -24,19 +24,22 @@ export function NameForm() {
 
   async function onSubmit() {
     setLoading(true);
-    console.log("User on submit:", await user?.getIdToken());
-    const { names: generatedNames } = await runFlow<GenerateNamesFlow>({
-      url: "/api/flow/names",
-      headers: {
-        "Authorization": user ? `Bearer ${await user.getIdToken()}` : "",
-      },
-      input: {
-        categories: [form.category.value],
-        description: form.description,
-      },
-    });
+    try {
+      const { names: generatedNames } = await runFlow<GenerateNamesFlow>({
+        url: "/api/flow/names",
+        headers: {
+          "Authorization": user ? `Bearer ${await user.getIdToken()}` : "",
+        },
+        input: {
+          categories: [form.category.value],
+          description: form.description,
+        },
+      });
+      setNames(generatedNames);
+    } catch (error) {
+      console.error(error);
+    }
 
-    setNames(generatedNames);
     setLoading(false);
   }
 
